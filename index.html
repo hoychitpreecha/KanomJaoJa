@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>❤️ Kanom JaoJa ❤️</title>
     
-    <!-- นำเข้าฟอนต์ Prompt จาก Google Fonts ให้ดูทันสมัยและมินิมอล -->
+    <!-- นำเข้าฟอนต์ Prompt -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
     
-    <link rel="icon" href="logo.jpg?v=3">
-    <link rel="apple-touch-icon" href="logo.jpg?v=3">
+    <link rel="icon" href="logo.jpg?v=4">
+    <link rel="apple-touch-icon" href="logo.jpg?v=4">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Kanom JaoJa">
 
     <style>
         * {
-            box-sizing: border-box; /* บังคับให้ทุกอย่างคำนวณขนาดรวมขอบเขต เพื่อป้องกันการตกขอบ */
+            box-sizing: border-box; 
         }
         body {
             font-family: 'Prompt', sans-serif;
@@ -29,17 +29,22 @@
             background-attachment: fixed; 
             color: #333;
             margin: 0;
-            padding: 20px 15px; /* ลด padding ด้านข้างลงนิดหน่อย สำหรับจอมือถือ */
+            padding: 20px 15px; 
         }
         .container {
             max-width: 600px;
-            width: 100%; /* ให้ความกว้างเต็มพอดีกับหน้าจอ */
+            width: 100%;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95); 
-            padding: 30px 20px; /* ปรับ padding ในกล่องให้พอดี */
+            
+            /* ปรับความโปร่งแสงตรงนี้ (0.8 = ทึบ 80% / โปร่งแสง 20%) */
+            /* ถ้าอยากให้ใสกว่านี้ ให้ลดตัวเลขลง เช่น 0.6 หรือ 0.5 ครับ */
+            background: rgba(255, 255, 255, 0.8); 
+            
+            padding: 30px 20px; 
             border-radius: 24px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            backdrop-filter: blur(10px); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(12px); /* เพิ่มความเบลอพื้นหลังให้ดูเป็นกระจกเงาสวยๆ */
+            -webkit-backdrop-filter: blur(12px); /* สำหรับ Safari บน iOS */
         }
         .logo-container {
             text-align: center;
@@ -62,34 +67,34 @@
         }
         p.subtitle {
             text-align: center;
-            color: #888;
+            color: #666;
             margin-top: 0;
             margin-bottom: 25px;
             font-size: 0.85em;
-            font-weight: 300;
+            font-weight: 400;
         }
         .form-group {
             margin-bottom: 18px;
-            width: 100%; /* บังคับความกว้าง */
+            width: 100%; 
         }
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
             font-size: 0.95em;
-            color: #555;
+            color: #444;
         }
         input[type="number"], input[type="date"] {
             width: 100%;
-            max-width: 100%; /* ป้องกันไม่ให้ทะลุกรอบ */
+            max-width: 100%; 
             padding: 14px 15px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid rgba(224, 224, 224, 0.8);
             border-radius: 12px;
-            background-color: #fafafa;
+            background-color: rgba(250, 250, 250, 0.85); /* ให้ช่องกรอกใสขึ้นนิดนึงเข้ากับพื้นหลัง */
             font-size: 16px;
             font-family: 'Prompt', sans-serif;
             transition: all 0.3s ease;
-            appearance: none; /* ล้างรูปแบบเดิมของ iOS บางส่วน */
+            appearance: none; 
             -webkit-appearance: none;
         }
         input[type="number"]:focus, input[type="date"]:focus {
@@ -120,7 +125,7 @@
         hr {
             border: 0;
             height: 1px;
-            background: #eee;
+            background: rgba(0,0,0,0.1);
             margin: 35px 0 25px 0;
         }
         h2 {
@@ -134,17 +139,17 @@
             margin-bottom: 15px;
             border-radius: 16px;
             border: none;
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.9); /* ให้การ์ดสรุปยอดใสขึ้นนิดนึง */
             box-shadow: 0 4px 15px rgba(0,0,0,0.04);
             transition: transform 0.2s ease;
-            width: 100%; /* บังคับความกว้างของการ์ด */
+            width: 100%; 
         }
         .summary-card:active {
             transform: scale(0.99);
         }
         .summary-card h3 {
             margin-top: 0;
-            border-bottom: 1px dashed #eee;
+            border-bottom: 1px dashed #ddd;
             padding-bottom: 12px;
             font-size: 1.05rem;
             font-weight: 500;
@@ -155,14 +160,14 @@
             justify-content: space-between;
             margin-bottom: 8px;
             font-size: 0.95em;
-            color: #666;
+            color: #555;
         }
         .total-profit {
             font-size: 1.15em;
             font-weight: 600;
             margin-top: 12px;
             padding-top: 12px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #ddd;
             color: #333;
         }
         .status-green { border-left: 8px solid #4caf50; }
@@ -215,7 +220,7 @@
 
 <div class="container">
     <div class="logo-container">
-        <img src="logo.jpg?v=3" alt="โลโก้ Kanom JaoJa">
+        <img src="logo.jpg?v=4" alt="โลโก้ Kanom JaoJa">
     </div>
     
     <h1>❤️ Kanom JaoJa ❤️</h1>
