@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบันทึกบัญชี - ร้านขนมเปี๊ยะ Jaoja</title>
+    <title>ระบบบันทึกบัญชี - ❤️ Kanom JaoJa ❤️</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -20,10 +20,22 @@
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
+        /* CSS สำหรับจัดการโลโก้ */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .logo-container img {
+            max-width: 150px; /* ปรับขนาดความใหญ่ของโลโก้ตรงนี้ได้ */
+            height: auto;
+            border-radius: 50%; /* ทำให้ขอบรูปโค้งมนเป็นวงกลม */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* เพิ่มเงาให้รูปดูมีมิติ */
+        }
         h1 {
             text-align: center;
             color: #d84315;
             margin-bottom: 5px;
+            margin-top: 0;
         }
         p.subtitle {
             text-align: center;
@@ -109,7 +121,12 @@
 <body>
 
 <div class="container">
-    <h1>ร้านขนมเปี๊ยะ Jaoja</h1>
+    <!-- ส่วนของโลโก้ -->
+    <div class="logo-container">
+        <img src="logo.jpg" alt="โลโก้ Kanom JaoJa">
+    </div>
+    
+    <h1>❤️ Kanom JaoJa ❤️</h1>
     <p class="subtitle">ระบบบันทึกรายรับ-รายจ่าย และคำนวณกำไร</p>
 
     <div class="form-group">
@@ -135,10 +152,8 @@
 </div>
 
 <script>
-    // เก็บข้อมูลลงใน Array (ในใช้งานจริงสามารถต่อยอดเชื่อม Database ได้)
     let records = [];
 
-    // เซ็ตค่าเริ่มต้นของวันที่เป็นวันนี้
     document.getElementById('date').valueAsDate = new Date();
 
     function addRecord() {
@@ -155,10 +170,8 @@
             return;
         }
 
-        // เพิ่มข้อมูลลงระบบ
         records.push({ date, income, expense });
         
-        // ล้างฟอร์ม (ยกเว้นวันที่)
         document.getElementById('income').value = '';
         document.getElementById('expense').value = '';
 
@@ -169,10 +182,9 @@
         const container = document.getElementById('summary-container');
         container.innerHTML = '';
 
-        // จัดกลุ่มข้อมูลตาม ปี-เดือน
         const monthlyData = {};
         records.forEach(record => {
-            const monthKey = record.date.substring(0, 7); // ตัดมาแค่ YYYY-MM
+            const monthKey = record.date.substring(0, 7);
             if (!monthlyData[monthKey]) {
                 monthlyData[monthKey] = { income: 0, expense: 0 };
             }
@@ -180,14 +192,12 @@
             monthlyData[monthKey].expense += record.expense;
         });
 
-        // เรียงเดือนจากล่าสุดไปเก่าสุด
         const sortedMonths = Object.keys(monthlyData).sort().reverse();
 
         sortedMonths.forEach(monthKey => {
             const data = monthlyData[monthKey];
             const profit = data.income - data.expense;
             
-            // คำนวณเปอร์เซ็นต์กำไรสุทธิ (Net Profit Margin)
             let profitMargin = 0;
             if (data.income > 0) {
                 profitMargin = (profit / data.income) * 100;
@@ -195,7 +205,6 @@
                 profitMargin = -100;
             }
 
-            // กำหนดสีตามเงื่อนไข
             let statusClass = '';
             let statusText = '';
             
@@ -203,21 +212,17 @@
                 statusClass = 'status-red';
                 statusText = '🔴 ขาดทุน';
             } else if (profitMargin >= 30) {
-                // สมมติว่ากำไรเกิน 30% ถือว่ากำไรดี (เปลี่ยนตัวเลขได้)
                 statusClass = 'status-green';
                 statusText = '🟢 กำไรดี';
             } else {
-                // กำไรอยู่ระหว่าง 0% ถึง 29.9%
                 statusClass = 'status-yellow';
                 statusText = '🟡 กำไรปานกลาง';
             }
 
-            // แปลงรูปแบบเดือนให้สวยงาม เช่น "2026-09"
             const [year, month] = monthKey.split('-');
             const monthNames = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
             const displayMonth = `${monthNames[parseInt(month) - 1]} ${year}`;
 
-            // สร้างการ์ดแสดงผล
             const card = document.createElement('div');
             card.className = `summary-card ${statusClass}`;
             card.innerHTML = `
@@ -243,7 +248,6 @@
         }
     }
 
-    // โหลดหน้าจอครั้งแรก
     updateSummary();
 </script>
 
