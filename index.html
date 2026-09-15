@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบันทึกบัญชี - ❤️ Kanom JaoJa ❤️</title>
+    <title>❤️ Kanom JaoJa ❤️</title>
+    
+    <!-- โค้ดสำหรับดึงรูป logo.jpg ไปทำเป็นไอคอนบนหน้าจอมือถือ -->
+    <link rel="icon" href="logo.jpg">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Kanom JaoJa">
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -20,16 +28,15 @@
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        /* CSS สำหรับจัดการโลโก้ */
         .logo-container {
             text-align: center;
             margin-bottom: 15px;
         }
         .logo-container img {
-            max-width: 150px; /* ปรับขนาดความใหญ่ของโลโก้ตรงนี้ได้ */
+            max-width: 150px;
             height: auto;
-            border-radius: 50%; /* ทำให้ขอบรูปโค้งมนเป็นวงกลม */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* เพิ่มเงาให้รูปดูมีมิติ */
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         h1 {
             text-align: center;
@@ -42,6 +49,7 @@
             color: #777;
             margin-top: 0;
             margin-bottom: 20px;
+            font-size: 0.9em;
         }
         .form-group {
             margin-bottom: 15px;
@@ -103,7 +111,6 @@
             padding-top: 10px;
             border-top: 1px dashed rgba(0,0,0,0.2);
         }
-        /* Color Indicators */
         .status-green {
             background-color: #e8f5e9;
             border-left: 6px solid #2e7d32;
@@ -116,66 +123,127 @@
             background-color: #ffebee;
             border-left: 6px solid #c62828;
         }
+        /* แจ้งเตือนเวลาเซฟข้อมูล */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 15px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 16px;
+        }
+        #toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- ส่วนของโลโก้ -->
     <div class="logo-container">
+        <!-- รูปภาพโลโก้ -->
         <img src="logo.jpg" alt="โลโก้ Kanom JaoJa">
     </div>
     
     <h1>❤️ Kanom JaoJa ❤️</h1>
-    <p class="subtitle">ระบบบันทึกรายรับ-รายจ่าย และคำนวณกำไร</p>
+    <p class="subtitle">ระบบบันทึกบัญชีร้าน (ข้อมูลถูกบันทึกในเครื่องนี้)</p>
 
     <div class="form-group">
         <label for="date">วันที่:</label>
         <input type="date" id="date" required>
     </div>
     <div class="form-group">
-        <label for="income">ยอดรายรับ (บาท):</label>
+        <label for="income">ยอดรายรับรวม (บาท):</label>
         <input type="number" id="income" placeholder="0" min="0">
     </div>
     <div class="form-group">
-        <label for="expense">ยอดซื้อของเข้าร้าน / ต้นทุน (บาท):</label>
+        <label for="expense">ยอดต้นทุน/ซื้อของ (บาท):</label>
         <input type="number" id="expense" placeholder="0" min="0">
     </div>
-    <button onclick="addRecord()">บันทึกข้อมูล</button>
+    <button onclick="saveRecord()">บันทึก/อัปเดตข้อมูล</button>
 
     <hr>
 
     <h2>สรุปยอดรายเดือน</h2>
-    <div id="summary-container">
-        <!-- ข้อมูลสรุปจะแสดงที่นี่ -->
-    </div>
+    <div id="summary-container"></div>
 </div>
 
+<div id="toast">บันทึกข้อมูลเรียบร้อย!</div>
+
 <script>
-    let records = [];
+    // ดึงข้อมูลเก่าจาก LocalStorage (หน่วยความจำในเครื่อง) ถ้าไม่มีให้เป็น Object ว่างๆ
+    let records = JSON.parse(localStorage.getItem('jaoja_data')) || {};
 
-    document.getElementById('date').valueAsDate = new Date();
+    const dateInput = document.getElementById('date');
+    const incomeInput = document.getElementById('income');
+    const expenseInput = document.getElementById('expense');
 
-    function addRecord() {
-        const date = document.getElementById('date').value;
-        const income = parseFloat(document.getElementById('income').value) || 0;
-        const expense = parseFloat(document.getElementById('expense').value) || 0;
+    // ตั้งค่าเริ่มต้นเมื่อเปิดหน้าเว็บ
+    window.onload = () => {
+        dateInput.valueAsDate = new Date();
+        loadDataForSelectedDate();
+        updateSummary();
+    };
 
-        if (!date) {
+    // ตรวจจับเมื่อมีการเปลี่ยนวันที่ ให้ดึงข้อมูลของวันนั้นมาแสดง
+    dateInput.addEventListener('change', loadDataForSelectedDate);
+
+    function loadDataForSelectedDate() {
+        const selectedDate = dateInput.value;
+        if (records[selectedDate]) {
+            // ถ้ามีข้อมูลของวันนี้อยู่แล้ว ให้ดึงมาโชว์ในช่อง
+            incomeInput.value = records[selectedDate].income || '';
+            expenseInput.value = records[selectedDate].expense || '';
+        } else {
+            // ถ้าไม่มี ให้เป็นช่องว่าง
+            incomeInput.value = '';
+            expenseInput.value = '';
+        }
+    }
+
+    function saveRecord() {
+        const selectedDate = dateInput.value;
+        const income = parseFloat(incomeInput.value) || 0;
+        const expense = parseFloat(expenseInput.value) || 0;
+
+        if (!selectedDate) {
             alert("กรุณาเลือกวันที่");
             return;
         }
-        if (income === 0 && expense === 0) {
-            alert("กรุณากรอกรายรับหรือรายจ่าย");
-            return;
-        }
 
-        records.push({ date, income, expense });
+        // บันทึก หรือ เขียนทับข้อมูลของวันนั้นๆ
+        records[selectedDate] = { income: income, expense: expense };
         
-        document.getElementById('income').value = '';
-        document.getElementById('expense').value = '';
+        // เซฟลง LocalStorage ในเครื่อง
+        localStorage.setItem('jaoja_data', JSON.stringify(records));
 
+        // แสดงกล่องแจ้งเตือนว่าบันทึกแล้ว
+        showToast();
+        
+        // อัปเดตหน้าสรุปผล
         updateSummary();
+    }
+
+    function showToast() {
+        const toast = document.getElementById("toast");
+        toast.className = "show";
+        setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
     }
 
     function updateSummary() {
@@ -183,14 +251,18 @@
         container.innerHTML = '';
 
         const monthlyData = {};
-        records.forEach(record => {
-            const monthKey = record.date.substring(0, 7);
+        
+        // วนลูปอ่านข้อมูลทุกวันที่มีในระบบ
+        for (const date in records) {
+            const data = records[date];
+            const monthKey = date.substring(0, 7); // เอาแค่ปี-เดือน (YYYY-MM)
+            
             if (!monthlyData[monthKey]) {
                 monthlyData[monthKey] = { income: 0, expense: 0 };
             }
-            monthlyData[monthKey].income += record.income;
-            monthlyData[monthKey].expense += record.expense;
-        });
+            monthlyData[monthKey].income += data.income;
+            monthlyData[monthKey].expense += data.expense;
+        }
 
         const sortedMonths = Object.keys(monthlyData).sort().reverse();
 
@@ -228,11 +300,11 @@
             card.innerHTML = `
                 <h3>เดือน: ${displayMonth} <span style="font-size:0.8em; float:right;">${statusText}</span></h3>
                 <div class="summary-details">
-                    <span>ยอดขายรวม (รายรับ):</span>
+                    <span>ยอดขายรวม:</span>
                     <span>${data.income.toLocaleString()} บาท</span>
                 </div>
                 <div class="summary-details">
-                    <span>ต้นทุนรวม (ซื้อของ):</span>
+                    <span>ต้นทุนรวม:</span>
                     <span>${data.expense.toLocaleString()} บาท</span>
                 </div>
                 <div class="summary-details total-profit">
@@ -247,8 +319,6 @@
             container.innerHTML = '<p style="text-align:center; color:#888;">ยังไม่มีข้อมูลในระบบ</p>';
         }
     }
-
-    updateSummary();
 </script>
 
 </body>
