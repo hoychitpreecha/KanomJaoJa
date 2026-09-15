@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบบันทึกบัญชี - ร้านขนมเปี๊ยะ Jaoja</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #d84315;
+            margin-bottom: 5px;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #777;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"], input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #d84315;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #bf360c;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 30px 0;
+        }
+        .summary-card {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .summary-card h3 {
+            margin-top: 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding-bottom: 10px;
+        }
+        .summary-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        .total-profit {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed rgba(0,0,0,0.2);
+        }
+        /* Color Indicators */
+        .status-green {
+            background-color: #e8f5e9;
+            border-left: 6px solid #2e7d32;
+        }
+        .status-yellow {
+            background-color: #fffde7;
+            border-left: 6px solid #fbc02d;
+        }
+        .status-red {
+            background-color: #ffebee;
+            border-left: 6px solid #c62828;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>ร้านขนมเปี๊ยะ Jaoja</h1>
+    <p class="subtitle">ระบบบันทึกรายรับ-รายจ่าย และคำนวณกำไร</p>
+
+    <div class="form-group">
+        <label for="date">วันที่:</label>
+        <input type="date" id="date" required>
+    </div>
+    <div class="form-group">
+        <label for="income">ยอดรายรับ (บาท):</label>
+        <input type="number" id="income" placeholder="0" min="0">
+    </div>
+    <div class="form-group">
+        <label for="expense">ยอดซื้อของเข้าร้าน / ต้นทุน (บาท):</label>
+        <input type="number" id="expense" placeholder="0" min="0">
+    </div>
+    <button onclick="addRecord()">บันทึกข้อมูล</button>
+
+    <hr>
+
+    <h2>สรุปยอดรายเดือน</h2>
+    <div id="summary-container">
+        <!-- ข้อมูลสรุปจะแสดงที่นี่ -->
+    </div>
+</div>
+
+<script>
+    // เก็บข้อมูลลงใน Array (ในใช้งานจริงสามารถต่อยอดเชื่อม Database ได้)
+    let records = [];
+
+    // เซ็ตค่าเริ่มต้นของวันที่เป็นวันนี้
+    document.getElementById('date').valueAsDate = new Date();
+
+    function addRecord() {
+        const date = document.getElementById('date').value;
+        const income = parseFloat(document.getElementById('income').value) || 0;
+        const expense = parseFloat(document.getElementById('expense').value) || 0;
+
+        if (!date) {
+            alert("กรุณาเลือกวันที่");
+            return;
+        }
+        if (income === 0 && expense === 0) {
+            alert("กรุณากรอกรายรับหรือรายจ่าย");
+            return;
+        }
+
+        // เพิ่มข้อมูลลงระบบ
+        records.push({ date, income, expense });
+        
+        // ล้างฟอร์ม (ยกเว้นวันที่)
+        document.getElementById('income').value = '';
+        document.getElementById('expense').value = '';
+
+        updateSummary();
+    }
+
+    function updateSummary() {
+        const container = document.getElementById('summary-container');
+        container.innerHTML = '';
+
+        // จัดกลุ่มข้อมูลตาม ปี-เดือน
+        const monthlyData = {};
+        records.forEach(record => {
+            const monthKey = record.date.substring(0, 7); // ตัดมาแค่ YYYY-MM
+            if (!monthlyData[monthKey]) {
+                monthlyData[monthKey] = { income: 0, expense: 0 };
+            }
+            monthlyData[monthKey].income += record.income;
+            monthlyData[monthKey].expense += record.expense;
+        });
+
+        // เรียงเดือนจากล่าสุดไปเก่าสุด
+        const sortedMonths = Object.keys(monthlyData).sort().reverse();
+
+        sortedMonths.forEach(monthKey => {
+            const data = monthlyData[monthKey];
+            const profit = data.income - data.expense;
+            
+            // คำนวณเปอร์เซ็นต์กำไรสุทธิ (Net Profit Margin)
+            let profitMargin = 0;
+            if (data.income > 0) {
+                profitMargin = (profit / data.income) * 100;
+            } else if (data.income === 0 && data.expense > 0) {
+                profitMargin = -100;
+            }
+
+            // กำหนดสีตามเงื่อนไข
+            let statusClass = '';
+            let statusText = '';
+            
+            if (profit < 0) {
+                statusClass = 'status-red';
+                statusText = '🔴 ขาดทุน';
+            } else if (profitMargin >= 30) {
+                // สมมติว่ากำไรเกิน 30% ถือว่ากำไรดี (เปลี่ยนตัวเลขได้)
+                statusClass = 'status-green';
+                statusText = '🟢 กำไรดี';
+            } else {
+                // กำไรอยู่ระหว่าง 0% ถึง 29.9%
+                statusClass = 'status-yellow';
+                statusText = '🟡 กำไรปานกลาง';
+            }
+
+            // แปลงรูปแบบเดือนให้สวยงาม เช่น "2026-09"
+            const [year, month] = monthKey.split('-');
+            const monthNames = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+            const displayMonth = `${monthNames[parseInt(month) - 1]} ${year}`;
+
+            // สร้างการ์ดแสดงผล
+            const card = document.createElement('div');
+            card.className = `summary-card ${statusClass}`;
+            card.innerHTML = `
+                <h3>เดือน: ${displayMonth} <span style="font-size:0.8em; float:right;">${statusText}</span></h3>
+                <div class="summary-details">
+                    <span>ยอดขายรวม (รายรับ):</span>
+                    <span>${data.income.toLocaleString()} บาท</span>
+                </div>
+                <div class="summary-details">
+                    <span>ต้นทุนรวม (ซื้อของ):</span>
+                    <span>${data.expense.toLocaleString()} บาท</span>
+                </div>
+                <div class="summary-details total-profit">
+                    <span>กำไรสุทธิ:</span>
+                    <span>${profit.toLocaleString()} บาท (${profitMargin.toFixed(2)}%)</span>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        if (sortedMonths.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#888;">ยังไม่มีข้อมูลในระบบ</p>';
+        }
+    }
+
+    // โหลดหน้าจอครั้งแรก
+    updateSummary();
+</script>
+
+</body>
+</html>
