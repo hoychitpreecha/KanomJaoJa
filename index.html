@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>❤️ Kanom JaoJa ❤️</title>
     
-    <!-- นำเข้าฟอนต์ Prompt -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
     
-    <link rel="icon" href="logo.jpg?v=4">
-    <link rel="apple-touch-icon" href="logo.jpg?v=4">
+    <link rel="icon" href="logo.jpg?v=6">
+    <link rel="apple-touch-icon" href="logo.jpg?v=6">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Kanom JaoJa">
 
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#d84315">
+
     <style>
-        * {
-            box-sizing: border-box; 
-        }
+        * { box-sizing: border-box; }
         body {
             font-family: 'Prompt', sans-serif;
             background-color: #f5f7fa; 
@@ -32,187 +32,60 @@
             padding: 20px 15px; 
         }
         .container {
-            max-width: 600px;
-            width: 100%;
-            margin: 0 auto;
-            
-            /* ปรับความโปร่งแสงตรงนี้ (0.8 = ทึบ 80% / โปร่งแสง 20%) */
-            /* ถ้าอยากให้ใสกว่านี้ ให้ลดตัวเลขลง เช่น 0.6 หรือ 0.5 ครับ */
-            background: rgba(255, 255, 255, 0.6); 
-            
-            padding: 30px 20px; 
-            border-radius: 24px; 
+            max-width: 600px; width: 100%; margin: 0 auto;
+            background: rgba(255, 255, 255, 0.8); 
+            padding: 30px 20px; border-radius: 24px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            backdrop-filter: blur(12px); /* เพิ่มความเบลอพื้นหลังให้ดูเป็นกระจกเงาสวยๆ */
-            -webkit-backdrop-filter: blur(12px); /* สำหรับ Safari บน iOS */
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); 
         }
-        .logo-container {
-            text-align: center;
-            margin-bottom: 10px;
-        }
+        .logo-container { text-align: center; margin-bottom: 10px; }
         .logo-container img {
-            max-width: 120px; 
-            height: auto;
-            border-radius: 50%;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            max-width: 120px; height: auto; border-radius: 50%; box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
-        h1 {
-            text-align: center;
-            color: #d84315;
-            margin-bottom: 5px;
-            margin-top: 10px;
-            font-size: 1.5rem; 
-            font-weight: 600;
-            white-space: nowrap; 
-        }
-        p.subtitle {
-            text-align: center;
-            color: #666;
-            margin-top: 0;
-            margin-bottom: 25px;
-            font-size: 0.85em;
-            font-weight: 400;
-        }
-        .form-group {
-            margin-bottom: 18px;
-            width: 100%; 
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            font-size: 0.95em;
-            color: #444;
-        }
-        input[type="number"], input[type="date"] {
-            width: 100%;
-            max-width: 100%; 
-            padding: 14px 15px;
-            border: 1px solid rgba(224, 224, 224, 0.8);
-            border-radius: 12px;
-            background-color: rgba(250, 250, 250, 0.85); /* ให้ช่องกรอกใสขึ้นนิดนึงเข้ากับพื้นหลัง */
-            font-size: 16px;
-            font-family: 'Prompt', sans-serif;
-            transition: all 0.3s ease;
-            appearance: none; 
-            -webkit-appearance: none;
-        }
-        input[type="number"]:focus, input[type="date"]:focus {
-            border-color: #d84315;
-            box-shadow: 0 0 0 3px rgba(216, 67, 21, 0.15);
-            outline: none;
-            background-color: #fff;
-        }
-        button {
-            width: 100%;
-            padding: 15px;
-            background-color: #d84315;
-            color: white;
-            border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            font-family: 'Prompt', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 15px rgba(216, 67, 21, 0.25);
-            margin-top: 5px;
-        }
-        button:active {
-            transform: scale(0.98);
-            box-shadow: 0 2px 8px rgba(216, 67, 21, 0.2);
-        }
-        hr {
-            border: 0;
-            height: 1px;
-            background: rgba(0,0,0,0.1);
-            margin: 35px 0 25px 0;
-        }
-        h2 {
-            font-size: 1.25rem;
-            margin-bottom: 15px;
-            color: #333;
-            font-weight: 600;
-        }
-        .summary-card {
-            padding: 18px;
-            margin-bottom: 15px;
-            border-radius: 16px;
-            border: none;
-            background-color: rgba(255, 255, 255, 0.9); /* ให้การ์ดสรุปยอดใสขึ้นนิดนึง */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-            transition: transform 0.2s ease;
-            width: 100%; 
-        }
-        .summary-card:active {
-            transform: scale(0.99);
-        }
-        .summary-card h3 {
-            margin-top: 0;
-            border-bottom: 1px dashed #ddd;
-            padding-bottom: 12px;
-            font-size: 1.05rem;
-            font-weight: 500;
-            color: #222;
-        }
-        .summary-details {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.95em;
-            color: #555;
-        }
-        .total-profit {
-            font-size: 1.15em;
-            font-weight: 600;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid #ddd;
-            color: #333;
-        }
-        .status-green { border-left: 8px solid #4caf50; }
-        .status-yellow { border-left: 8px solid #ffca28; }
-        .status-red { border-left: 8px solid #f44336; }
+        h1 { text-align: center; color: #d84315; margin-bottom: 5px; margin-top: 10px; font-size: 1.5rem; font-weight: 600; white-space: nowrap; }
+        p.subtitle { text-align: center; color: #666; margin-top: 0; margin-bottom: 25px; font-size: 0.85em; font-weight: 400; }
+        .form-group { margin-bottom: 18px; width: 100%; }
+        label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.95em; color: #444; }
         
-        .status-badge {
-            font-size: 0.75em;
-            padding: 4px 10px;
-            border-radius: 20px;
-            float: right;
-            font-weight: 500;
+        /* เปลี่ยน input ให้รองรับการพิมพ์เครื่องหมาย + */
+        input[type="text"], input[type="date"] {
+            width: 100%; max-width: 100%; padding: 14px 15px; border: 1px solid rgba(224, 224, 224, 0.8);
+            border-radius: 12px; background-color: rgba(250, 250, 250, 0.85); font-size: 16px; font-family: 'Prompt', sans-serif;
+            transition: all 0.3s ease; appearance: none; -webkit-appearance: none;
         }
-        .badge-green { background-color: #e8f5e9; color: #2e7d32; }
-        .badge-yellow { background-color: #fff8e1; color: #f57f17; }
-        .badge-red { background-color: #ffebee; color: #c62828; }
-
+        input[type="text"]:focus, input[type="date"]:focus { border-color: #d84315; box-shadow: 0 0 0 3px rgba(216, 67, 21, 0.15); outline: none; background-color: #fff; }
+        
+        button {
+            width: 100%; padding: 15px; background-color: #d84315; color: white; border: none; border-radius: 14px;
+            font-size: 16px; font-weight: 600; font-family: 'Prompt', sans-serif; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 6px 15px rgba(216, 67, 21, 0.25); margin-top: 5px;
+        }
+        button:active { transform: scale(0.98); box-shadow: 0 2px 8px rgba(216, 67, 21, 0.2); }
+        hr { border: 0; height: 1px; background: rgba(0,0,0,0.1); margin: 35px 0 25px 0; }
+        h2 { font-size: 1.25rem; margin-bottom: 15px; color: #333; font-weight: 600; }
+        .summary-card {
+            padding: 18px; margin-bottom: 15px; border-radius: 16px; border: none; background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04); transition: transform 0.2s ease; width: 100%; 
+        }
+        .summary-card:active { transform: scale(0.99); }
+        .summary-card h3 { margin-top: 0; border-bottom: 1px dashed #ddd; padding-bottom: 12px; font-size: 1.05rem; font-weight: 500; color: #222; }
+        .summary-details { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95em; color: #555; }
+        .total-profit { font-size: 1.15em; font-weight: 600; margin-top: 12px; padding-top: 12px; border-top: 1px solid #ddd; color: #333; }
+        .status-green { border-left: 8px solid #4caf50; } .status-yellow { border-left: 8px solid #ffca28; } .status-red { border-left: 8px solid #f44336; }
+        .status-badge { font-size: 0.75em; padding: 4px 10px; border-radius: 20px; float: right; font-weight: 500; }
+        .badge-green { background-color: #e8f5e9; color: #2e7d32; } .badge-yellow { background-color: #fff8e1; color: #f57f17; } .badge-red { background-color: #ffebee; color: #c62828; }
         #toast {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: #333; 
-            color: #fff;
-            text-align: center;
-            border-radius: 30px;
-            padding: 16px;
-            position: fixed;
-            z-index: 1;
-            left: 50%;
-            bottom: 40px;
-            transform: translateX(-50%);
-            font-size: 15px;
-            font-weight: 400;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 30px;
+            padding: 16px; position: fixed; z-index: 1; left: 50%; bottom: 40px; transform: translateX(-50%); font-size: 15px; font-weight: 400; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
-        #toast.show {
-            visibility: visible;
-            animation: fadein 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeout 0.4s 2.5s ease-in;
-        }
-        @keyframes fadein {
-            from {bottom: 0; opacity: 0; transform: translateX(-50%) scale(0.8);}
-            to {bottom: 40px; opacity: 1; transform: translateX(-50%) scale(1);}
-        }
-        @keyframes fadeout {
-            from {bottom: 40px; opacity: 1;}
-            to {bottom: 0; opacity: 0;}
+        #toast.show { visibility: visible; animation: fadein 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), fadeout 0.4s 2.5s ease-in; }
+        @keyframes fadein { from {bottom: 0; opacity: 0; transform: translateX(-50%) scale(0.8);} to {bottom: 40px; opacity: 1; transform: translateX(-50%) scale(1);} }
+        @keyframes fadeout { from {bottom: 40px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+        
+        .tip-text {
+            font-size: 0.75em;
+            color: #888;
+            margin-top: 5px;
+            display: block;
         }
     </style>
 </head>
@@ -220,7 +93,7 @@
 
 <div class="container">
     <div class="logo-container">
-        <img src="logo.jpg?v=4" alt="โลโก้ Kanom JaoJa">
+        <img src="logo.jpg?v=6" alt="โลโก้ Kanom JaoJa">
     </div>
     
     <h1>❤️ Kanom JaoJa ❤️</h1>
@@ -232,11 +105,15 @@
     </div>
     <div class="form-group">
         <label for="income">ยอดรายรับรวม (บาท):</label>
-        <input type="number" id="income" placeholder="0" min="0">
+        <!-- เปลี่ยนเป็น input type="text" เพื่อให้พิมพ์เครื่องหมาย + ได้ -->
+        <input type="text" id="income" placeholder="0">
+        <span class="tip-text">💡 พิมพ์ + เพื่อบวกเพิ่มได้เลย เช่น 500+250</span>
     </div>
     <div class="form-group">
         <label for="expense">ยอดต้นทุน / ซื้อของ (บาท):</label>
-        <input type="number" id="expense" placeholder="0" min="0">
+        <!-- เปลี่ยนเป็น input type="text" เพื่อให้พิมพ์เครื่องหมาย + ได้ -->
+        <input type="text" id="expense" placeholder="0">
+        <span class="tip-text">💡 พิมพ์ + เพื่อบวกเพิ่มได้เลย เช่น 200+50</span>
     </div>
     <button onclick="saveRecord()">บันทึกข้อมูล</button>
 
@@ -274,10 +151,40 @@
         }
     }
 
+    // ฟังก์ชันใหม่: แปลงข้อความที่มีเครื่องหมาย + ให้เป็นตัวเลขผลรวม
+    function calculateSum(inputString) {
+        if (!inputString) return 0;
+        
+        // ลบช่องว่างออกทั้งหมด ป้องกันการพิมพ์ผิด
+        let cleanString = inputString.toString().replace(/\s/g, '');
+        
+        // ตรวจสอบว่ามีเครื่องหมาย + หรือไม่
+        if (cleanString.includes('+')) {
+            // แยกตัวเลขออกจากกันด้วยเครื่องหมาย +
+            const numbers = cleanString.split('+');
+            let total = 0;
+            
+            // นำตัวเลขทั้งหมดมาบวกกัน
+            numbers.forEach(num => {
+                const val = parseFloat(num);
+                if (!isNaN(val)) {
+                    total += val;
+                }
+            });
+            return total;
+        } else {
+            // ถ้าไม่มีเครื่องหมาย + ก็แปลงเป็นตัวเลขปกติ
+            const val = parseFloat(cleanString);
+            return isNaN(val) ? 0 : val;
+        }
+    }
+
     function saveRecord() {
         const selectedDate = dateInput.value;
-        const income = parseFloat(incomeInput.value) || 0;
-        const expense = parseFloat(expenseInput.value) || 0;
+        
+        // ใช้ฟังก์ชัน calculateSum ในการคำนวณยอด
+        const income = calculateSum(incomeInput.value);
+        const expense = calculateSum(expenseInput.value);
 
         if (!selectedDate) {
             alert("กรุณาเลือกวันที่");
@@ -286,6 +193,11 @@
 
         records[selectedDate] = { income: income, expense: expense };
         localStorage.setItem('jaoja_data', JSON.stringify(records));
+        
+        // อัปเดตตัวเลขในช่องให้เป็นผลลัพธ์สุทธิหลังจากบวกแล้ว
+        if(income > 0) incomeInput.value = income;
+        if(expense > 0) expenseInput.value = expense;
+        
         showToast();
         updateSummary();
     }
@@ -324,23 +236,10 @@
                 profitMargin = -100;
             }
 
-            let statusClass = '';
-            let badgeClass = '';
-            let statusText = '';
-            
-            if (profit < 0) {
-                statusClass = 'status-red';
-                badgeClass = 'badge-red';
-                statusText = 'ขาดทุน';
-            } else if (profitMargin >= 30) {
-                statusClass = 'status-green';
-                badgeClass = 'badge-green';
-                statusText = 'กำไรดี';
-            } else {
-                statusClass = 'status-yellow';
-                badgeClass = 'badge-yellow';
-                statusText = 'กำไรปานกลาง';
-            }
+            let statusClass = ''; let badgeClass = ''; let statusText = '';
+            if (profit < 0) { statusClass = 'status-red'; badgeClass = 'badge-red'; statusText = 'ขาดทุน'; }
+            else if (profitMargin >= 30) { statusClass = 'status-green'; badgeClass = 'badge-green'; statusText = 'กำไรดี'; }
+            else { statusClass = 'status-yellow'; badgeClass = 'badge-yellow'; statusText = 'กำไรปานกลาง'; }
 
             const [year, month] = monthKey.split('-');
             const monthNames = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
@@ -350,25 +249,14 @@
             card.className = `summary-card ${statusClass}`;
             card.innerHTML = `
                 <h3>${displayMonth} <span class="status-badge ${badgeClass}">${statusText}</span></h3>
-                <div class="summary-details">
-                    <span>ยอดขายรวม:</span>
-                    <span>${data.income.toLocaleString()} ฿</span>
-                </div>
-                <div class="summary-details">
-                    <span>ต้นทุนรวม:</span>
-                    <span>${data.expense.toLocaleString()} ฿</span>
-                </div>
-                <div class="summary-details total-profit">
-                    <span>กำไรสุทธิ:</span>
-                    <span style="color: ${profit < 0 ? '#d32f2f' : '#2e7d32'}">${profit.toLocaleString()} ฿</span>
-                </div>
+                <div class="summary-details"><span>ยอดขายรวม:</span><span>${data.income.toLocaleString()} ฿</span></div>
+                <div class="summary-details"><span>ต้นทุนรวม:</span><span>${data.expense.toLocaleString()} ฿</span></div>
+                <div class="summary-details total-profit"><span>กำไรสุทธิ:</span><span style="color: ${profit < 0 ? '#d32f2f' : '#2e7d32'}">${profit.toLocaleString()} ฿</span></div>
             `;
             container.appendChild(card);
         });
 
-        if (sortedMonths.length === 0) {
-            container.innerHTML = '<p style="text-align:center; color:#aaa; font-weight:300; margin-top:30px;">ยังไม่มีข้อมูลในระบบ</p>';
-        }
+        if (sortedMonths.length === 0) { container.innerHTML = '<p style="text-align:center; color:#aaa; font-weight:300; margin-top:30px;">ยังไม่มีข้อมูลในระบบ</p>'; }
     }
 </script>
 
